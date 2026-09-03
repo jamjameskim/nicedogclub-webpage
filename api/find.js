@@ -41,6 +41,13 @@ function escapeHtml(s) {
 
 function publicPhotoUrl(path) {
   if (!path) return null;
+  // uploadPhoto()가 public-photos 버킷에 대해서는 이미 완성된 공개 URL을
+  // 돌려주고 있어서(src/lib/photoStore.ts, getPublicUrl().data.publicUrl),
+  // lost_cases.photo_url엔 처음부터 전체 URL이 들어있다. 그걸 "저장 경로"로
+  // 오인해 이 함수가 URL 접두사를 한 번 더 씌우면 주소가 통째로 겹쳐서
+  // 깨진 링크가 된다(실제로 사진이 계속 안 뜨던 원인). 이미 URL이면 그대로
+  // 쓴다.
+  if (/^https?:\/\//.test(path)) return path;
   return `${SUPABASE_URL}/storage/v1/object/public/public-photos/${path}`;
 }
 
@@ -188,7 +195,11 @@ export default async function handler(req) {
         <span class="badge">● 찾는 중</span>
         <h1>${escapeHtml(lostCase.pet_name)}를 찾고 있어요</h1>
         <p class="muted">${escapeHtml(lostCase.pet_summary)}</p>
-        ${photo ? `<img class="photo" src="${escapeHtml(photo)}" alt="${escapeHtml(lostCase.pet_name)}" />` : ''}
+        ${
+          photo
+            ? `<img class="photo" src="${escapeHtml(photo)}" alt="${escapeHtml(lostCase.pet_name)}" onerror="this.style.display='none'" />`
+            : ''
+        }
         <div class="card">
           <p class="muted" style="font-weight:800; color:${INK};">마지막 목격 위치</p>
           <p>${escapeHtml(lostCase.last_seen_address)}</p>
@@ -245,10 +256,12 @@ export default async function handler(req) {
       body: JSON.stringify({
         case_id: lostCase.id,
         at,
-        // 비회원 제보는 지도를 안 보여주므로 정확한 좌표가 없다 — 신고의
-        // 마지막 목격 좌표를 그대로 쓰고, 실제 목격 장소는 address(자유
-        // 텍스트)로만 전달한다. 앱의 타임라인 화면은 address를 보여주지
-        // 좌표를 안 쓰므로 문제없다.
+        // 브라우저 GPS(navigator.geolocation)는 "제보자가 지금 폼을 쓰는
+        // 위치"이지 "목격한 위치"가 아니다 — 걷다 본 뒤 집에 가서 작성하면
+        // 완전히 다른 좌표가 된다. 그런 틀릴 수 있는 좌표를 지도에 점으로
+        // 찍느니, 신고의 마지막 목격 좌표를 중립적인 자리로 쓰고 실제
+        // 목격 장소는 address(자유 텍스트)로만 정직하게 전달한다. 앱의
+        // 타임라인 화면은 address를 보여주지 좌표를 안 쓰므로 문제없다.
         lat: lostCase.last_seen_lat,
         lng: lostCase.last_seen_lng,
         address: place,
