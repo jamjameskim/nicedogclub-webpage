@@ -6,26 +6,6 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/find", "destination": "/api/find" },
-    {
-      "source": "/",
-      "has": [{ "type": "host", "value": "admin-walk.wouldyou.me" }],
-      "destination": "/docs/product-spec"
-    },
-    {
-      "source": "/policy",
-      "has": [{ "type": "host", "value": "admin-walk.wouldyou.me" }],
-      "destination": "/docs/policy"
-    },
-    {
-      "source": "/funnel-roadmap",
-      "has": [{ "type": "host", "value": "admin-walk.wouldyou.me" }],
-      "destination": "/docs/funnel-roadmap"
-    },
-    {
-      "source": "/product-spec",
-      "has": [{ "type": "host", "value": "admin-walk.wouldyou.me" }],
-      "destination": "/docs/product-spec"
-    }
+    { "source": "/find", "destination": "/api/find" }
   ]
 }
