@@ -28,7 +28,7 @@ export function renderList({items=[],status='all',page=1,total=0,error=false}, n
   ${body}
   ${!error&&total>PAGE_SIZE?`<nav class="pagination" aria-label="목록 페이지">${page>1?`<a href="${esc(urlFor(status,page-1))}" rel="prev">← 이전</a>`:'<span aria-disabled="true">← 이전</span>'}<span>${page} / ${pages}</span>${page<pages?`<a href="${esc(urlFor(status,page+1))}" rel="next">다음 →</a>`:'<span aria-disabled="true">다음 →</span>'}</nav>`:''}
   <p class="list-note">실종 당일을 1일째로 계산합니다. 종료된 신고는 종료일 기준이며,<br class="desktop-break"> 종료일이 기록되지 않은 경우 실종일수를 표시하지 않습니다.</p>
-  </main><footer><div class="wrap footer-in"><a href="/">우쥬산책</a><div><a href="/terms">이용약관</a><a href="/privacy">개인정보처리방침</a></div></div><div class="wrap footer-biz">우쥬랩 · 대표 김재민 · 사업자등록번호 267-49-01090 · 인천광역시 서해구 심곡로56번길 1, 가호 3층-S32호(심곡동) · <a href="mailto:wouldyouteam@gmail.com">wouldyouteam@gmail.com</a></div></footer></body></html>`;
+  </main><footer><div class="wrap footer-in"><a href="/">우쥬산책</a><div><a href="/terms">이용약관</a><a href="/privacy">개인정보처리방침</a><a href="/location-terms">위치정보 이용약관</a></div></div><div class="wrap footer-biz">우쥬랩 · 대표 김재민 · 사업자등록번호 267-49-01090 · 인천광역시 서해구 심곡로56번길 1, 가호 3층-S32호(심곡동) · <a href="mailto:wouldyouteam@gmail.com">wouldyouteam@gmail.com</a></div></footer></body></html>`;
   return new Response(html,{status:error?503:200,headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
 }
 function number(n) { return new Intl.NumberFormat('ko-KR').format(n); }
