@@ -65,15 +65,6 @@
   <footer><div class="wrap footer-in"><span>© 2026 우쥬산책. Remember · Connect · Find.</span><div class="footer-links"><a href="terms.html">이용약관</a><a href="privacy.html">개인정보처리방침</a><a href="location-terms.html">위치정보 이용약관</a></div></div><div class="wrap footer-biz">우쥬랩 · 대표 김재민 · 사업자등록번호 267-49-01090 · 인천광역시 서해구 심곡로56번길 1, 가호 3층-S32호(심곡동) · <a href="mailto:wouldyouteam@gmail.com">wouldyouteam@gmail.com</a></div></footer>
 
   <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="modal-card"><button class="modal-close" id="close" aria-label="닫기">×</button><span class="eyebrow">GOOGLE PLAY</span><h2 id="modal-title">구글 플레이는 준비 중이에요</h2><p>구글 플레이는 준비중입니다. 곧 뵐 수 있도록 노력할게요!</p></div></div>
-  <script>
-    const nav=document.getElementById('nav'),menu=document.getElementById('menu'),modal=document.getElementById('modal'),close=document.getElementById('close');
-    addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>20),{passive:true});
-    menu.addEventListener('click',()=>{const open=nav.classList.toggle('open');menu.setAttribute('aria-expanded',open);menu.textContent=open?'×':'☰'});
-    document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.textContent='☰'}));
-    const showModal=()=>{modal.classList.add('open');document.body.classList.add('locked')};
-    const hideModal=()=>{modal.classList.remove('open');document.body.classList.remove('locked')};
-    document.querySelectorAll('.open-modal').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();showModal()}));close.addEventListener('click',hideModal);modal.addEventListener('click',e=>{if(e.target===modal)hideModal()});addEventListener('keydown',e=>{if(e.key==='Escape')hideModal()});
-    const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
-  </script>
+  <script src="/public/nav.js" defer></script>
 </body>
 </html>

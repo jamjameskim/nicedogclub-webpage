@@ -219,7 +219,7 @@ export default async function handler(req) {
         <p class="muted">${escapeHtml(lostCase.pet_summary)}</p>
         ${
           photo
-            ? `<img class="photo" src="${escapeHtml(photo)}" alt="${escapeHtml(lostCase.pet_name)}" onerror="this.style.display='none'" />`
+            ? `<img class="photo" src="${escapeHtml(photo)}" alt="${escapeHtml(lostCase.pet_name)}" />`
             : ''
         }
         <div class="card">
