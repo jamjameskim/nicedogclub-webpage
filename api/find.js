@@ -269,6 +269,24 @@ export default async function handler(req) {
       return sentPage(lostCase.pet_name);
     }
 
+    // 이 폼은 로그인 없이 누구나 접근 가능하고 service_role로 직접
+    // insert하므로(RLS 우회), rate limit이 없으면 사건 ID 하나만 알아도
+    // sightings·알림 큐를 무한정 채울 수 있었다. 같은 사건에 최근(guest
+    // 기준) 제보가 이미 있으면 짧은 쿨다운을 둔다 — IP를 새로 저장하지
+    // 않고 기존 sightings.created_at만으로 판단해서, 별도 개인정보(IP)를
+    // 쌓지 않고도 반복 제출을 막는다. 실제 사람이 몇 초 안에 같은 사건에
+    // 두 번 연달아 제보할 일은 거의 없다.
+    const COOLDOWN_MS = 20_000;
+    const recentRes = await restFetch(
+      `/sightings?case_id=eq.${encodeURIComponent(lostCase.id)}&is_guest=eq.true&select=created_at&order=created_at.desc&limit=1`,
+    );
+    if (recentRes.ok) {
+      const [last] = await recentRes.json();
+      if (last?.created_at && Date.now() - new Date(last.created_at).getTime() < COOLDOWN_MS) {
+        return sentPage(lostCase.pet_name);
+      }
+    }
+
     const place = String(form.get('place') ?? '').trim().slice(0, 120);
     if (!place) return notFoundPage();
 
