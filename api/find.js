@@ -94,6 +94,7 @@ ${ogImage ? `<meta property="og:image" content="${escapeHtml(ogImage)}" />` : ''
 <meta property="og:title" content="${escapeHtml(title)}" />
 ${ogDescription ? `<meta property="og:description" content="${escapeHtml(ogDescription)}" />` : ''}
 <link rel="icon" type="image/png" href="/public/favicon.png" />
+<script src="/public/analytics.js" defer></script>
 <style>
   * { box-sizing: border-box; }
   body {
